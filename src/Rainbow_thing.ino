@@ -1,18 +1,34 @@
-/*
- * Project Rainbow_thing
- * Description:
- * Author:
- * Date:
- */
+SYSTEM_MODE(MANUAL);
+SYSTEM_THREAD(ENABLED);
 
-// setup() runs once, when the device is first turned on.
 void setup() {
-  // Put initialization like pinMode and begin functions here.
-
+  pinMode(D5, OUTPUT);
+  pinMode(D6, OUTPUT);
+  pinMode(D7, OUTPUT);
+  pinMode(A0, INPUT);
 }
 
-// loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  // The core of your code will likely live here.
+  float x = map(analogRead(A0), 0, 4095, 0, 765);
 
+  analogWrite(D5, 255 - r(x));
+  analogWrite(D6, 255 - b(x));
+  analogWrite(D7, 255 - g(x));
+}
+
+float r(float x) {
+  float y = max(0, (255 - abs(x)));
+  if (y == 0) {
+    return max(0, (255 - abs(x - 255*3)));
+  } else {
+    return y;
+  }
+}
+
+float b(float x) {
+  return max(0, (255 - abs(x - 255*2)));
+}
+
+float g(float x) {
+  return max(0, (255 - abs(x - 255)));
 }
